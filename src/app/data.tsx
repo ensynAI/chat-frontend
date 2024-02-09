@@ -58,7 +58,7 @@ export interface Conversation {
 }
 
 export interface Message {
-  id: number;
+  id?: number;
   role: string;
   content: string;
   name?: string;
@@ -76,11 +76,6 @@ export interface BotMessage extends Message {
 
 export interface FeedbackMessage extends Message {
   role: Role.Assistant;
-}
-
-export interface ServerGeneration {
-  generatedMessage: BotMessage;
-  feedbackMessage: BotMessage;
 }
 
 export enum Role {

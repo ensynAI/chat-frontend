@@ -37,11 +37,11 @@ export default function ChatBottombar({
 
   const handleThumbsUp = () => {
     const newMessage: Message = {
-      id: message.length + 1,
       role: "user",
-      name: "User",
-      avatar: UserThumbnail.userImage,
       content: "👍",
+      // id: 2,
+      // name: "User",
+      // avatar: UserThumbnail.userImage,
     };
     sendMessage(newMessage);
     setMessage("");
@@ -50,11 +50,11 @@ export default function ChatBottombar({
   const handleSend = () => {
     if (message.trim()) {
       const newMessage: Message = {
-        id: message.length + 1,
         role: "user",
-        name: "User",
-        avatar: UserThumbnail.userImage,
         content: message.trim(),
+        // id: 2,
+        // name: "User",
+        // avatar: UserThumbnail.userImage,
       };
       sendMessage(newMessage);
       setMessage("");
