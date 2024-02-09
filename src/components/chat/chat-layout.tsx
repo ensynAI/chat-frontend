@@ -72,14 +72,14 @@ export function ChatLayout({
           )}`;
         }}
         className={cn(
-          isCollapsed && "min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out"
+          isCollapsed &&
+            "min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out"
         )}
       >
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
           links={userData.map((user) => ({
             name: user.name,
-            messages: user.messages ?? [],
             avatar: user.avatar,
             variant: selectedUser.name === user.name ? "grey" : "ghost",
           }))}
@@ -88,11 +88,7 @@ export function ChatLayout({
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <Chat
-          messages={selectedUser.messages}
-          selectedUser={selectedUser}
-          isMobile={isMobile}
-        />
+        <Chat selectedUser={selectedUser} isMobile={isMobile} />
       </ResizablePanel>
     </ResizablePanelGroup>
   );
