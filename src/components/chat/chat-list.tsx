@@ -1,4 +1,10 @@
-import { Message, UserData, Role, UserThumbnail } from "@/app/data";
+import {
+  Message,
+  UserData,
+  Role,
+  UserThumbnail,
+  UserMessage,
+} from "@/app/data";
 import { cn } from "@/lib/utils";
 import React, { useRef, useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
@@ -11,7 +17,7 @@ import { Sparkles } from "lucide-react";
 interface ChatListProps {
   messages?: Message[];
   selectedUser: UserData;
-  sendMessage: (newMessage: Message) => void;
+  sendMessage: (newMessage: UserMessage) => void;
   isMobile: boolean;
 }
 
@@ -126,10 +132,9 @@ export function ChatList({
                     <div>
                       <div className="h-4"></div>
 
-                      {visibleMessages[index] && (
+                      {visibleMessages[index] && "feedback" in message && (
                         <span className="border-2 border-blue-200  bg-border p-3 rounded-md max-w-xs mt-2">
-                          {/* Change to AI feedback message */}
-                          {message.content}
+                          {(message! as UserMessage).feedback}
                         </span>
                       )}
                     </div>

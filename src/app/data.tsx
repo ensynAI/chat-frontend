@@ -67,7 +67,7 @@ export interface Message {
 
 export interface UserMessage extends Message {
   role: Role.User;
-  feedback: string;
+  feedback?: string;
 }
 
 export interface BotMessage extends Message {

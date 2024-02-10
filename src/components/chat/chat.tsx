@@ -1,4 +1,4 @@
-import { Message, UserData, Conversation, Role } from "@/app/data";
+import { Message, UserMessage, UserData, Conversation, Role } from "@/app/data";
 import ChatTopbar from "./chat-topbar";
 import { ChatList } from "./chat-list";
 import React, { useEffect } from "react";
@@ -6,6 +6,8 @@ import axios from "axios";
 
 const conversationHistoryURL = "http://localhost:8000" + "/message/initialize";
 const generateMessageURL = "http://localhost:8000" + "/message/generate";
+const generateMessageAndFeedbackURL =
+  "http://localhost:8000" + "/message/generate_with_feedback";
 
 interface ChatProps {
   messages?: Message[];
@@ -13,28 +15,19 @@ interface ChatProps {
   isMobile: boolean;
 }
 
-interface ConversationHistoryResponse {
+interface Response {
   status: number;
-  data: ConversationData;
+  data: any;
 }
 
-interface GenerationResponse {
-  status: number;
+interface GenerationResponse extends Response {
   data: ServerGeneration;
-}
-
-interface ConversationData {
-  conversation: Conversation;
 }
 
 interface ServerGeneration {
   message: Message; // TODO: Change to BotMessage
+  feedback: Message; // TODO: Change to FeedbackMessage
 }
-
-// export interface ServerGeneration {
-//   generatedMessage: Message; // TODO: Change to BotMessage
-//   feedbackMessage: Message; // TODO: Change to FeedbackMessage
-// }
 
 export function Chat({ selectedUser, isMobile }: ChatProps) {
   const [messagesState, setMessages] = React.useState<Message[]>([]);
@@ -42,25 +35,19 @@ export function Chat({ selectedUser, isMobile }: ChatProps) {
     getConversationHistory();
   }, []);
 
-  const sendMessage = (newMessage: Message) => {
+  const sendMessage = (newMessage: UserMessage) => {
     const updatedMessages = [...messagesState, newMessage];
     setMessages(updatedMessages);
 
-    console.log("updatedMessages:", updatedMessages);
-    // TODO: Send request to backend
-    generateMessage(updatedMessages);
-    // generateMessageAndFeedback(updatedMessages);
-    // const generatedMessage: BotMessage = ;
-    // const feedbackMessage: FeedbackMessagem = ;
-
-    // setMessages([...messagesState, generatedMessage, feedbackMessage]);
+    // generateMessage(updatedMessages);
+    generateMessageAndFeedback(updatedMessages);
   };
 
   function getConversationHistory() {
     axios
       .get(conversationHistoryURL)
       .then((response) => {
-        if (validateConversationHistory(response)) {
+        if (validateResponse(response)) {
           const messages: Message[] = response.data.conversation.messages;
           setMessages(messages);
         } else {
@@ -90,8 +77,48 @@ export function Chat({ selectedUser, isMobile }: ChatProps) {
       });
   }
 
-  function validateConversationHistory(response: ConversationHistoryResponse) {
+  function generateMessageAndFeedback(messages: Message[]) {
+    const params = {
+      messages: messages,
+    };
+
+    axios
+      .post(generateMessageAndFeedbackURL, params)
+      .then((response) => {
+        if (validateGenerationResponse(response)) {
+          const generateMessage: Message = response.data.message;
+          const feedbackMessage: Message = response.data.feedback;
+
+          if (messages.length > 0) {
+            (messages.at(-1)! as UserMessage).feedback =
+              feedbackMessage.content;
+          }
+
+          setMessages([...messages, generateMessage]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function validateResponse(response: Response) {
     if (response.status === 200) {
+      return true;
+    } else {
+      console.log(
+        `An error occurred while processing the request. Status code: ${response.status}`
+      );
+      return false;
+    }
+  }
+
+  function validateGenerationResponse(response: GenerationResponse) {
+    if (
+      response.status === 200 &&
+      response.data.message.role === Role.Assistant &&
+      response.data.feedback.role === Role.Assistant
+    ) {
       return true;
     } else {
       console.log(

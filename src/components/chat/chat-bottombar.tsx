@@ -12,13 +12,13 @@ import React, { useRef, useState } from "react";
 import { buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Message, UserThumbnail } from "@/app/data";
+import { UserMessage, Role } from "@/app/data";
 import { Textarea } from "../ui/textarea";
 import { EmojiPicker } from "../emoji-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 interface ChatBottombarProps {
-  sendMessage: (newMessage: Message) => void;
+  sendMessage: (newMessage: UserMessage) => void;
   isMobile: boolean;
 }
 
@@ -36,8 +36,8 @@ export default function ChatBottombar({
   };
 
   const handleThumbsUp = () => {
-    const newMessage: Message = {
-      role: "user",
+    const newMessage: UserMessage = {
+      role: Role.User,
       content: "👍",
       // id: 2,
       // name: "User",
@@ -49,8 +49,8 @@ export default function ChatBottombar({
 
   const handleSend = () => {
     if (message.trim()) {
-      const newMessage: Message = {
-        role: "user",
+      const newMessage: UserMessage = {
+        role: Role.User,
         content: message.trim(),
         // id: 2,
         // name: "User",
