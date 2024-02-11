@@ -111,17 +111,17 @@ export function ChatList({messages, selectedUser, sendMessage, isMobile} : ChatL
 
                                         {/* Add feedback only to message on the right side */}
                                         {message.name !== selectedUser.name && (
-                                            <div >
-                                                <div className="h-4"></div>
+                                            < >
+                                                
 
                                                 {visibleMessages[index] && (
                                                     <span
-                                                        className="border-2 border-blue-200  bg-border p-3 rounded-md max-w-xs mt-2">
+                                                        className=" bg-purple-200 p-3 rounded-md max-w-xs mt-2">
                                                         {/* Change to AI feedback message */}
                                                         {message.message}
                                                     </span>
                                                 )}
-                                            </div>
+                                            </>
                                         )}
                                     </div>
 
