@@ -1,4 +1,4 @@
-import {Message, UserData} from "@/app/data";
+import {Message, UserData, Role, UserThumbnail, UserMessage} from "@/app/data";
 import {cn} from "@/lib/utils";
 import React, {useRef, useState} from "react";
 import {Avatar, AvatarImage} from "../ui/avatar";
@@ -11,7 +11,7 @@ import {Sparkles} from "lucide-react";
 interface ChatListProps {
     messages?: Message[];
     selectedUser : UserData;
-    sendMessage : (newMessage : Message) => void;
+    sendMessage : (newMessage : UserMessage) => void;
     isMobile : boolean;
 }
 
@@ -19,13 +19,13 @@ export function ChatList({messages, selectedUser, sendMessage, isMobile} : ChatL
     const messagesContainerRef = useRef < HTMLDivElement > (null);
     const [visibleMessages,
         setVisibleMessages] = useState < {
-        [key : number]: boolean
+        [key : number]: boolean;
     } > ({});
 
     const toggleAiFeedback = (index : number) => {
-        setVisibleMessages(prevVisibleMessages => ({
+        setVisibleMessages((prevVisibleMessages) => ({
             ...prevVisibleMessages,
-            [index]: !prevVisibleMessages[index] // Toggle visibility
+            [index]: !prevVisibleMessages[index], // Toggle visibility
         }));
     };
 
@@ -78,56 +78,48 @@ export function ChatList({messages, selectedUser, sendMessage, isMobile} : ChatL
                                 originX: 0.5,
                                 originY: 0.5
                             }}
-                                className={cn("flex flex-col gap-2 p-4 whitespace-pre-wrap", message.name !== selectedUser.name
+                                className={cn("flex flex-col gap-2 p-4 whitespace-pre-wrap", message.role === Role.User
                                 ? "items-end"
                                 : "items-start")}>
                                 <div className="flex gap-3 items-center">
-                                    {message.name === selectedUser.name && (
+                                    {message.role === Role.Assistant && (
                                         <Avatar className="flex justify-center items-center">
-                                            <AvatarImage src={message.avatar} alt={message.name} width={6} height={6}/>
+                                            <AvatarImage src={UserThumbnail.botImage} alt={"Bot"} width={6} height={6}/>
                                         </Avatar>
                                     )}
 
                                     {/* Toggle AI feedback button */}
-
-                                    {message.name !== selectedUser.name && (
-                                            <Link
-                                                href="#"
-                                                className={cn(buttonVariants({variant: "ghost", size: "icon"}), "h-9 w-9", "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-whi" +
-                                                    "te shrink-0")}
-                                                onClick={(e) => toggleAiFeedback(index)}>
-                                                <Sparkles size={20} className="text-muted-foreground"/>
-                                            </Link>
-                                        )}
+                                    {message.role === Role.User && (
+                                        <Link
+                                            href="#"
+                                            className={cn(buttonVariants({variant: "ghost", size: "icon"}), "h-9 w-9", "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-whi" +
+                                                "te shrink-0")}
+                                            onClick={(e) => toggleAiFeedback(index)}>
+                                            <Sparkles size={20} className="text-muted-foreground"/>
+                                        </Link>
+                                    )}
 
                                     <div className="flex flex-col">
 
-                                    
-
                                         <span className=" bg-accent p-3 rounded-md max-w-xs pb-2">
 
-                                            {message.message}
+                                            {message.content}
                                         </span>
 
                                         {/* Add feedback only to message on the right side */}
-                                        {message.name !== selectedUser.name && (
-                                            < >
-                                                
-
-                                                {visibleMessages[index] && (
-                                                    <span
-                                                        className=" bg-purple-200 p-3 rounded-md max-w-xs mt-2">
-                                                        {/* Change to AI feedback message */}
-                                                        {message.message}
-                                                    </span>
-                                                )}
-                                            </>
+                                        {message.name !== selectedUser.name && ( <> {
+                                            visibleMessages[index] && "feedback" in message && (
+                                                <span className=" bg-purple-200 p-3 rounded-md max-w-xs mt-2">
+                                                    {(message !as UserMessage).feedback}
+                                                </span>
+                                            )
+                                        } </>
                                         )}
                                     </div>
 
-                                    {message.name !== selectedUser.name && (
+                                    {message.role === Role.User && (
                                         <Avatar className="flex justify-center items-center">
-                                            <AvatarImage src={message.avatar} alt={message.name} width={6} height={6}/>
+                                            <AvatarImage src={UserThumbnail.userImage} alt={"User"} width={6} height={6}/>
                                         </Avatar>
                                     )}
                                 </div>

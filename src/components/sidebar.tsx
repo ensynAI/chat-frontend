@@ -17,7 +17,6 @@ interface SidebarProps {
   isCollapsed: boolean;
   links: {
     name: string;
-    messages: Message[];
     avatar: string;
     variant: "grey" | "ghost";
   }[];
@@ -118,12 +117,12 @@ export function Sidebar({ links, isCollapsed, isMobile }: SidebarProps) {
               </Avatar>
               <div className="flex flex-col max-w-28">
                 <span>{link.name}</span>
-                {link.messages.length > 0 && (
+                {/* {link.messages.length > 0 && (
                   <span className="text-zinc-300 text-xs truncate ">
                     {link.messages[link.messages.length - 1].name.split(" ")[0]}
-                    : {link.messages[link.messages.length - 1].message}
+                    : {link.messages[link.messages.length - 1].content}
                   </span>
-                )}
+                )} */}
               </div>
             </Link>
           )
