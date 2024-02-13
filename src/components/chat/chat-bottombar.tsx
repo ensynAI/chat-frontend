@@ -80,7 +80,7 @@ export default function ChatBottombar({
   return (
     <div className="p-2 flex justify-between w-full items-center gap-2">
       <div className="flex">
-        <Popover>
+        {/* <Popover>
           <PopoverTrigger asChild>
             <Link
               href="#"
@@ -133,7 +133,7 @@ export default function ChatBottombar({
               </Link>
             )}
           </PopoverContent>
-        </Popover>
+        </Popover> */}
         {/* {!message.trim() && !isMobile && (
           <div className="flex">
             {BottombarIcons.map((icon, index) => (
