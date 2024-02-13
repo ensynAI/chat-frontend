@@ -13,6 +13,8 @@ COPY src src/
 RUN mkdir /app/.next && chmod -R 777 /app/.next
 RUN touch /app/next-env.d.ts && chmod -R 777 /app/next-env.d.ts
 
+EXPOSE 3000
+
 USER node
 
 ENTRYPOINT [ "npm", "run" ]
