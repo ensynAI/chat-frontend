@@ -80,7 +80,7 @@ export default function ChatBottombar({
   return (
     <div className="p-2 flex justify-between w-full items-center gap-2">
       <div className="flex">
-        <Popover>
+        {/* <Popover>
           <PopoverTrigger asChild>
             <Link
               href="#"
@@ -133,8 +133,8 @@ export default function ChatBottombar({
               </Link>
             )}
           </PopoverContent>
-        </Popover>
-        {!message.trim() && !isMobile && (
+        </Popover> */}
+        {/* {!message.trim() && !isMobile && (
           <div className="flex">
             {BottombarIcons.map((icon, index) => (
               <Link
@@ -150,7 +150,7 @@ export default function ChatBottombar({
               </Link>
             ))}
           </div>
-        )}
+        )} */}
       </div>
 
       <AnimatePresence initial={false}>
@@ -211,9 +211,9 @@ export default function ChatBottombar({
               "h-9 w-9",
               "dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white shrink-0"
             )}
-            onClick={handleThumbsUp}
+            // onClick={handleSend}
           >
-            <ThumbsUp size={20} className="text-muted-foreground" />
+            <SendHorizontal size={20} className="text-muted-foreground" />
           </Link>
         )}
       </AnimatePresence>

@@ -53,7 +53,7 @@ export function ChatLayout({
       }}
       className="h-full items-stretch"
     >
-      <ResizablePanel
+      {/* <ResizablePanel
         defaultSize={defaultLayout[0]}
         collapsedSize={navCollapsedSize}
         collapsible={true}
@@ -86,7 +86,7 @@ export function ChatLayout({
           isMobile={isMobile}
         />
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle withHandle /> */}
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
         <Chat selectedUser={selectedUser} isMobile={isMobile} />
       </ResizablePanel>
